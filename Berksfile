@@ -22,3 +22,5 @@ cookbook 'chef-splunk',
 
 cookbook 'supermarket-omnibus-cookbook',
   git: 'https://github.com/irvingpop/supermarket-omnibus-cookbook.git'
+
+cookbook 'cookbooks-vagrant-ohai', git: 'https://github.com/tknerr/cookbooks-vagrant-ohai.git'
