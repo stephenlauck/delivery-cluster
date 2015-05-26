@@ -7,7 +7,7 @@ long_description 'Installs Chef Delivery, a solution for continuously ' \
                  'delivering applications and infrastructure safely at speed'
 version '0.2.31'
 
-depends 'chef-server-12'
+depends 'chef-server'
 depends 'chef-server-ingredient'
 depends 'git'
 depends 'push-jobs'

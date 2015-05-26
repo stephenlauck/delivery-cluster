@@ -406,3 +406,10 @@ task :help do
   puts "\nTo switch your environment run:"
   puts "  # export CHEF_ENV=#{'my_new_environment'.yellow}\n"
 end
+
+begin
+  require "kitchen/rake_tasks"
+  Kitchen::RakeTasks.new
+rescue LoadError
+  puts ">>>>> Kitchen gem not loaded, omitting tasks" unless ENV["CI"]
+end

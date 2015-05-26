@@ -10,3 +10,4 @@ gem 'chef-provisioning-aws', git: 'https://github.com/chef/chef-provisioning-aws
                              ref: 'master'
 gem 'chef-provisioning-ssh'
 gem 'kitchen-vagrant',       '~> 0.16.0'
+gem "test-kitchen"
