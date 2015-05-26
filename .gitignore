@@ -10,3 +10,4 @@ nodes*
 .chef/delivery-cluster*
 .chef/keys
 .chef/provisioning/
+.kitchen.local.yml

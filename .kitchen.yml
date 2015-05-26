@@ -1,0 +1,70 @@
+---
+driver:
+  name: vagrant
+  ssh:
+    insert_key: false
+
+provisioner:
+  name: chef_zero
+  chef_zero_port: 9010
+
+platforms:
+  - name: centos-6.6
+
+suites:
+  - name: chef-server
+    # provisioner:
+    #   name: policyfile_zero
+    #   client_rb:
+    #     deployment_group: supermarket-local
+    run_list:
+      - recipe[test::hostsfile]
+      - recipe[test::setup_ssh_keys]
+      - recipe[chef-server::default]
+      - recipe[chef-server::addons]
+      - recipe[test::example_org_and_user]
+      - recipe[test::delivery_setup]
+    driver:
+      vm_hostname: chef.example.com
+      network:
+        - ['private_network', {ip: '33.33.33.10'}]
+      customize:
+        memory: 2048
+        cpus: 2
+    attributes:
+      chef-server:
+        api_fqdn: 'chef.example.com'
+        addons:
+          - opscode-manage
+          - opscode-reporting
+          - opscode-push-jobs-server
+        configuration:
+          oc_id:
+            applications:
+              analytics:
+                redirect_uri: 'https://analytics.example.com/'
+              # supermarket:
+              #   redirect_uri: 'https://supermarket.example.com/auth/chef_oauth2/callback'
+          rabbitmq:
+            vip: '33.33.33.10'
+            node_ip_address: '0.0.0.0'
+
+  - name: delivery
+    run_list:
+      - recipe[test::hostsfile]
+      - recipe[test::delivery_keys]
+      - recipe[delivery-cluster::delivery]
+      - recipe[test::create_enterprise]
+    attributes:
+      delivery-cluster:
+        delivery:
+          fqdn: 'delivery.example.com'
+          chef_server: https://chef.example.com/organizations/chef_delivery
+    driver:
+      vm_hostname: delivery.example.com
+      network:
+        - ['private_network', {ip: '33.33.33.12'}]
+      customize:
+        memory: 1024
+        cpus: 1
+
