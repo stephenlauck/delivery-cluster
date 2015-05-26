@@ -88,12 +88,21 @@ unless ::File.exist?('/etc/delivery/delivery.pem')
   # We are assuming that there is already a "encrypted_data_bag_secret"
   # configured on "solo.rb" file. This is not any secret key. This MUST
   # be the key generated from the "chef-server-12" cookbook.
-  pem = Chef::EncryptedDataBagItem.load('delivery', 'delivery_pem', Chef::Config.encrypted_data_bag_secret)
+  begin
+    pem = Chef::EncryptedDataBagItem.load('delivery', 'delivery_pem', Chef::Config.encrypted_data_bag_secret)
 
-  file '/etc/delivery/delivery.pem' do
-    content pem['content']
-    mode 0644
-    notifies :run, 'execute[reconfigure delivery]'
+    file '/etc/delivery/delivery.pem' do
+      content pem['content']
+      mode 0644
+      notifies :run, 'execute[reconfigure delivery]'
+    end
+
+  rescue Net::HTTPServerException
+    Chef::Log.warn <<-EOH
+      We are assuming that there is already a "encrypted_data_bag_secret"
+      configured on "solo.rb" file. This is not any secret key. This MUST
+      be the key generated from the "chef-server-12" cookbook.
+    EOH
   end
 end
 
