@@ -7,6 +7,8 @@ end
 execute "scp -i /root/.ssh/insecure_private_key -o StrictHostKeyChecking=no -r root@chef.example.com:/tmp/delivery-validator.pem /etc/chef/validation.pem"
 
 execute "scp -i /root/.ssh/insecure_private_key -o StrictHostKeyChecking=no -r root@chef.example.com:/var/opt/opscode/nginx/ca/chef.example.com.crt  /etc/chef/trusted_certs/chef.example.com.crt"
+execute "scp -i /root/.ssh/insecure_private_key -o StrictHostKeyChecking=no -r root@delivery.example.com:/var/opt/delivery/nginx/ca/delivery.example.com.crt  /etc/chef/trusted_certs/delivery.example.com.crt"
+
 
 cookbook_file '/etc/chef/encrypted_data_bag_secret' do
   action :create
