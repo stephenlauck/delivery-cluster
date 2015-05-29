@@ -1,4 +1,5 @@
 .kitchen/
+data/
 clients*
 cookbooks/
 data_bags/
